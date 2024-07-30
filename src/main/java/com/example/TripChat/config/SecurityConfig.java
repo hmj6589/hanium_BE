@@ -1,5 +1,6 @@
 package com.example.TripChat.config;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,27 +21,28 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests((authorizeRequests) -> authorizeRequests
-                        .requestMatchers(new AntPathRequestMatcher("/signup")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/login")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/logout")).permitAll()
-                        .requestMatchers(new AntPathRequestMatcher("/h2-console/**")).permitAll()
+                .authorizeHttpRequests(authorizeRequests -> authorizeRequests
+                        .requestMatchers("/signup").permitAll()
+                        .requestMatchers("/login").permitAll()
+                        .requestMatchers("/h2-console/**").permitAll()
                         .anyRequest().authenticated())
-                .csrf((csrf) -> csrf
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/h2-console/**"))
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/signup"))
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/login"))
-                        .ignoringRequestMatchers(new AntPathRequestMatcher("/logout")))
-                .headers((headers) -> headers
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**", "/signup", "/login", "/logout"))
+                .headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
-                .formLogin((formLogin) -> formLogin
+                .formLogin(formLogin -> formLogin
                         .loginPage("/user/login")
-                        .defaultSuccessUrl("/"))
-                .logout((logout) -> logout
-                        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-                        .logoutSuccessUrl("/")
-                        .invalidateHttpSession(true));
+                        .defaultSuccessUrl("/")
+                        .permitAll())
+                .logout(logout -> logout
+                        .logoutUrl("/logout")
+                        .invalidateHttpSession(true)
+                        .deleteCookies("JSESSIONID")
+                        .logoutSuccessHandler((request, response, authentication) -> {
+                            response.setStatus(HttpServletResponse.SC_OK);
+                            response.getWriter().write("{\"message\": \"Logout successful!\"}");
+                        }));
         return http.build();
     }
 
