@@ -2,10 +2,8 @@ package com.example.TripChat.service;
 
 import com.example.TripChat.entity.Users;
 import com.example.TripChat.repository.UserRepository;
-import dto.UserDTO;
+import com.example.TripChat.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 

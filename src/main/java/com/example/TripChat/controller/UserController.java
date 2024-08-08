@@ -1,11 +1,9 @@
 package com.example.TripChat.controller;
 
-import com.example.TripChat.entity.Users;
 import com.example.TripChat.service.UserService;
-import dto.ResponseDTO;
-import dto.UserDTO;
+import com.example.TripChat.dto.ResponseDTO;
+import com.example.TripChat.dto.UserDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
