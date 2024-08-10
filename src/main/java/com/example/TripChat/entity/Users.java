@@ -1,6 +1,7 @@
 package com.example.TripChat.entity;
 
 
+import com.example.TripChat.enums.Nationality;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,4 +19,9 @@ public class Users {
     private String username;
     private String password;
     private String email;
+
+    @Enumerated(EnumType.STRING)
+    private Nationality nationality;
+
 }
+

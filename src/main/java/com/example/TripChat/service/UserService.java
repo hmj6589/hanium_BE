@@ -19,6 +19,7 @@ public class UserService {
                 .username(userDTO.getUsername())
                 .password(passwordEncoder.encode(userDTO.getPassword()))
                 .email(userDTO.getEmail())
+                .nationality(userDTO.getNationality())
                 .build();
         userRepository.save(user);
     }
@@ -26,7 +27,7 @@ public class UserService {
     public UserDTO findByUsername(String username) {
         Users user = userRepository.findByUsername(username);
         if (user != null) {
-            return new UserDTO(user.getUsername(), user.getPassword(), user.getEmail());
+            return new UserDTO(user.getUsername(), user.getPassword(), user.getEmail(), user.getNationality());
         }
         return null;
     }

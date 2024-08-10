@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -23,12 +25,12 @@ public class UserController {
         if (userService.findByUsername(userDTO.getUsername()) != null) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), "Username is already taken!"));
+                    .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), "Username 이 이미 존재합니다."));
         }
         userService.registerUser(userDTO);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(new ResponseDTO(HttpStatus.OK.value(), "User registered successfully!"));
+                .body(new ResponseDTO(HttpStatus.OK.value(), "회원가입에 성공했습니다."));
     }
 
     @PostMapping("/login")
@@ -37,10 +39,10 @@ public class UserController {
         if (foundUser != null && passwordEncoder.matches(userDTO.getPassword(), foundUser.getPassword())) {
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(new ResponseDTO(HttpStatus.OK.value(), "Login successful!"));
+                    .body(new ResponseDTO(HttpStatus.OK.value(), "로그인에 성공했습니다."));
         }
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
-                .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), "Invalid username or password!"));
+                .body(new ResponseDTO(HttpStatus.BAD_REQUEST.value(), "username, password를 다시 확인해주세요!"));
     }
 }
