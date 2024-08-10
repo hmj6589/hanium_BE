@@ -22,21 +22,20 @@ public class SecurityConfig {
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
-                        .requestMatchers("/signup").permitAll()
-                        .requestMatchers("/login").permitAll()
-                        .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/signup").permitAll()
+                        .requestMatchers("/api/login").permitAll()
                         .anyRequest().authenticated())
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/h2-console/**", "/signup", "/login", "/logout"))
+                        .ignoringRequestMatchers("/api/signup", "/api/login", "/api/logout"))
                 .headers(headers -> headers
                         .addHeaderWriter(new XFrameOptionsHeaderWriter(
                                 XFrameOptionsHeaderWriter.XFrameOptionsMode.SAMEORIGIN)))
                 .formLogin(formLogin -> formLogin
-                        .loginPage("/user/login")
+                        .loginPage("/api/user/login")
                         .defaultSuccessUrl("/")
                         .permitAll())
                 .logout(logout -> logout
-                        .logoutUrl("/logout")
+                        .logoutUrl("/api/logout")
                         .invalidateHttpSession(true)
                         .deleteCookies("JSESSIONID")
                         .logoutSuccessHandler((request, response, authentication) -> {
